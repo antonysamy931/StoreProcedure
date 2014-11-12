@@ -1,0 +1,168 @@
+﻿/// <reference path="../../Scripts/angular.min.js" />
+/// <reference path="../App.js" />
+"use strict";
+app.factory('SelectProcedure', function () {
+    var selectProcedureFactory = {};
+    var tableAlise = [];
+    var _CreateProcedure = function (pro) {
+        var procedure = "<span class='blue'>CREATE PROCEDURE</span> [" + pro.Name.toUpperCase() + "]<br/>";
+        procedure = procedure + "(<br/>";
+
+        /*Add params*/
+        if (pro.select.conditions.length != 0) {
+            if (pro.select.conditions[0].fieldName != '') {
+                procedure = procedure + _AddParameter(pro);
+            }
+        }
+        /*End params*/
+
+        procedure = procedure + ")<br/>";
+        procedure = procedure + "<span class='blue'>AS</span><br/>";
+        procedure = procedure + "<span class='blue'>BEGIN</span><br/><br/>";
+
+        /*Statement Starts*/
+        procedure = procedure + _SelectStatement(pro);
+        /*Statement End*/
+
+        /*Add condition*/
+        if (pro.select.conditions.length != 0) {
+            if (pro.select.conditions[0].fieldName != '') {
+                procedure = procedure + "<br/><span class='blue'>WHERE</span> <br/>" + _WhereStatement(pro);
+            }
+        }
+        /*End condition*/
+
+        procedure = procedure + "<br/><br/><span class='blue'>END</span>";
+        tableAlise = [];
+        return procedure;
+    };
+
+    var _AddParameter = function (pro) {
+        var params = '';
+        for (var i = 0; i < pro.select.conditions.length; i++) {
+            var dataType = pro.select.conditions[i].dataType == "varchar" ? "varchar(50)" : pro.select.conditions[i].dataType;
+            if (i != pro.select.conditions.length - 1) {
+                params = params + '&nbsp;&nbsp;&nbsp;&nbsp;@' + pro.select.conditions[i].fieldName.toUpperCase() + ' <span class="blue">' + dataType + '</span>,<br/>';
+            } else {
+                params = params + '&nbsp;&nbsp;&nbsp;&nbsp;@' + pro.select.conditions[i].fieldName.toUpperCase() + ' <span class="blue">' + dataType + '</span><br/>';
+            }
+        }
+        return params;
+    };
+
+    var _SelectStatement = function (pro) {
+        var selectField = "";
+        var tables = "";
+        for (var j = 0; j < pro.select.tableData.length; j++) {
+            var select = pro.select.tableData[j].selectedColumns;
+            if (select.length !== 0) {
+                var fields = pro.select.tableData[j].selectedColumns;
+                for (var i = 0; i < fields.length; i++) {
+                    if (i != fields.length - 1) {
+                        selectField = selectField + "[t" + Number(j + 1) + "]." + fields[i] + ",";
+                    }
+                    else {
+                        selectField = selectField + "[t" + Number(j + 1) + "]." + fields[i];
+                    }
+                }
+            }
+            else {
+                if (selectField == '') {
+                    selectField = selectField + "[t" + Number(j + 1) + "].*";
+                }
+                else {
+                    selectField = selectField + ",[t" + Number(j + 1) + "].*";
+                }
+            }
+
+            if (tables == '') {
+                tables = "[" + pro.select.tableData[j].tableName + "] <span class='blue'>AS</span> t" + Number(j + 1);
+            }
+            else {
+                tables = tables + " ,[" + pro.select.tableData[j].tableName + "] <span class='blue'>AS</span> t" + Number(j + 1);
+            }
+            tableAlise.push({ name: pro.select.tableData[j].tableName, alise: 't' + Number(j + 1) });
+        }
+        return "<span class='blue'>SELECT</span> " + selectField + " <span class='blue'>FROM</span> <br/>" + tables;
+    };
+
+    var _WhereStatement = function (pro) {
+        var where = '';
+        for (var i = 0; i < pro.select.conditions.length; i++) {
+            for (var j = 0; j < tableAlise.length; j++) {
+                if (pro.select.conditions[i].table == tableAlise[j].name) {
+                    var value = _Operator(pro.select.conditions[i].optrValue).replace('{}', '@' + pro.select.conditions[i].fieldName);
+                    var condition = '[' + tableAlise[j].alise + '].[' + pro.select.conditions[i].fieldName + ']' + value;
+                    if (where == '') {
+                        if (pro.select.conditions.length > 1) {
+                            where = condition + _logicalOperator(pro.select.conditions[i].logicalOperator) + ' <br/> ';
+                        }
+                        else {
+                            where = condition;
+                        }
+                    }
+                    else {
+                        where = where + condition + _logicalOperator(pro.select.conditions[i].logicalOperator) + ' <br/> ';
+                    }
+                }
+            }
+        }
+        return where;
+    };
+
+    var _Operator = function (operator) {
+        var symbol = '';
+        switch (operator) {
+            case 'Less Than':
+                symbol = '&nbsp;<&nbsp;{}';
+                break;
+            case 'Less than or Equal':
+                symbol = '&nbsp;<=&nbsp;{}';
+                break;
+            case 'Greater than':
+                symbol = '&nbsp;>&nbsp;{}';
+                break;
+            case 'Greater than or Equal':
+                symbol = '&nbsp;>=&nbsp;{}';
+                break;
+            case 'Equal':
+                symbol = '&nbsp;=&nbsp;{}';
+                break;
+            case 'Not Equal':
+                symbol = '&nbsp;<>&nbsp;{}';
+                break;
+            case 'Starts With':
+                symbol = "<span class='blue'>&nbsp;LIKE&nbsp;</span> <span class='red'>'%'</span>+{}";
+                break;
+            case 'Ends With':
+                symbol = "<span class='blue'>&nbsp;LIKE&nbsp;</span> {}+<span class='red'>'%'</span>";
+                break;
+            case 'Contains':
+                symbol = "<span class='blue'>&nbsp;LIKE&nbsp;</span> <span class='red'>'%'</span>+{}+<span class='red'>'%'</span>";
+                break;
+            default:
+                symbol = '&nbsp;=&nbsp;{}';
+                break;
+        }
+        return symbol;
+    };
+
+    var _logicalOperator = function (operator) {
+        var symbol = '';
+        switch (operator) {
+            case 'AND':
+                symbol = '&nbsp;&&&nbsp;';
+                break;
+            case 'OR':
+                symbol = '&nbsp;||&nbsp;';
+                break;
+            default:
+                break;
+        }
+        return symbol;
+    };
+
+    selectProcedureFactory.CreateProcedure = _CreateProcedure;
+
+    return selectProcedureFactory;
+});

@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html ng-app="Procedure" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Procedure</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="Content/Style.css" rel="stylesheet" />
+</head>
+<body ng-controller="IndexController">
+    <div ng-view></div>
+</body>
+    <script src="Scripts/angular.min.js"></script>
+    <script src="Scripts/angular-route.min.js"></script>
+    <script src="Scripts/angular-sanitize.min.js"></script>
+    <script src="Scripts/angular-local-storage.min.js"></script>
+    <script src="Scripts/jquery-1.9.1.min.js"></script>
+    <script src="Application/App.js"></script>
+    <script src="Application/Route.js"></script>
+
+    <script src="Application/Service/DatabaseService.js"></script>
+    <script src="Application/Service/ProcedureSelect.js"></script>
+
+    <script src="Application/Controller/IndexController.js"></script>
+    <script src="Application/Controller/CredentialController.js"></script>
+    <script src="Application/Controller/HomeController.js"></script>
+</html>

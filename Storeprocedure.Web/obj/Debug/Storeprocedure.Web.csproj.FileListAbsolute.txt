@@ -1,0 +1,9 @@
+D:\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Web\bin\Storeprocedure.Web.dll
+D:\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Web\bin\Storeprocedure.Web.pdb
+D:\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Web\obj\Debug\Storeprocedure.Web.csprojResolveAssemblyReference.cache
+D:\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Web\obj\Debug\Storeprocedure.Web.dll
+D:\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Web\obj\Debug\Storeprocedure.Web.pdb
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Web\bin\Storeprocedure.Web.dll
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Web\bin\Storeprocedure.Web.pdb
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Web\obj\Debug\Storeprocedure.Web.dll
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Web\obj\Debug\Storeprocedure.Web.pdb
