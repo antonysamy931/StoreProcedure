@@ -372,7 +372,7 @@ app.controller("HomeController", ["$scope", "$location", "DatabaseService", "Sel
 
     $scope.CreateProcedure = function () {
         $scope.Result = SelectProcedure.CreateProcedure($scope.pro);
-    };
+    };   
 }]);
 
 /*
