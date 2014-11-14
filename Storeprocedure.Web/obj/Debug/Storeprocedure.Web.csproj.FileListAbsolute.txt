@@ -7,3 +7,8 @@ D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\
 D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Web\bin\Storeprocedure.Web.pdb
 D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Web\obj\Debug\Storeprocedure.Web.dll
 D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Web\obj\Debug\Storeprocedure.Web.pdb
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Web\bin\Storeprocedure.Web.dll
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Web\bin\Storeprocedure.Web.pdb
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Web\obj\Debug\Storeprocedure.Web.csprojResolveAssemblyReference.cache
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Web\obj\Debug\Storeprocedure.Web.dll
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Web\obj\Debug\Storeprocedure.Web.pdb
