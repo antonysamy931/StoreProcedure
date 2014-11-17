@@ -30,3 +30,19 @@ D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\
 D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.csprojResolveAssemblyReference.cache
 D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.dll
 D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.pdb
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\bin\Storeprocedure.Service.dll
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\bin\Storeprocedure.Service.pdb
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\bin\Newtonsoft.Json.dll
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\bin\System.Net.Http.Formatting.dll
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\bin\System.Web.Cors.dll
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\bin\System.Web.Http.Cors.dll
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\bin\System.Web.Http.dll
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\bin\System.Web.Http.WebHost.dll
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\bin\Newtonsoft.Json.xml
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\bin\System.Net.Http.Formatting.xml
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\bin\System.Web.Http.xml
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\bin\System.Web.Http.Cors.xml
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\bin\System.Web.Http.WebHost.xml
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.csprojResolveAssemblyReference.cache
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.dll
+C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.pdb
