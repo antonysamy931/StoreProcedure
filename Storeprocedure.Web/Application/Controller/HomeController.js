@@ -6,7 +6,7 @@ app.controller("HomeController", ["$scope", "$location", "DatabaseService", "Sel
     $scope.pro = {};
     $scope.dataBase = [];
     $scope.dataBase = DatabaseService.loadData();
-    if (typeof ($scope.dataBase) == 'undefined') {
+    if (typeof ($scope.dataBase) == 'undefined' || $scope.dataBase == null) {
         $location.path('/');
         //$scope.dataBase = DatabaseService.getCookies("DataBaseStructure");
     }
@@ -110,6 +110,13 @@ app.controller("HomeController", ["$scope", "$location", "DatabaseService", "Sel
             }
             $scope.pro.select.tableData[index].selectedColumns = [];
         }
+
+        $scope.pro.select.conditions = [];
+        $scope.pro.select.condition = false;
+
+        $scope.pro.select.JoinTables = [];
+        $scope.pro.select.join = false;
+
         //$scope.pro.select.addTables = removeDuplicatesInPlace($scope.dataBase.tablesRelation[tableIndex].Relation);
     };
 
@@ -184,6 +191,11 @@ app.controller("HomeController", ["$scope", "$location", "DatabaseService", "Sel
         var defaultTableName = tables[0];
         var tableIndex = $scope.dataBase.tablesNames.indexOf(defaultTableName);
         var columns = $scope.dataBase.tablesColumns[tableIndex].Columns;
+
+        for (var i = 0; i < columns.length; i++) {
+            columns[i].Checked = false;
+        }
+
         var model = "table" + Number($scope.pro.select.tableData.length + 1);
 
         //var relations = $scope.dataBase.tablesRelation[tableIndex].Relation;
@@ -334,7 +346,7 @@ app.controller("HomeController", ["$scope", "$location", "DatabaseService", "Sel
     $scope.JoinCheck = function (check) {
         if (check) {
             if ($scope.pro.select.JoinTables.length == 0) {
-                $scope.pro.select.JoinTables.push({ model: 'joins' + 1, tableOne: [], tableTwo: [], tableOneSelect: '', tableTwoSelect: '', join: '', validate: false });
+                $scope.pro.select.JoinTables.push({ model: 'joins' + 1, tableOne: [], tableTwo: [], tableOneSelect: '', tableTwoSelect: '', joinTypes: [], join: '', validate: false });
             }
             $scope.pro.select.JoinTables[0].tableOne = [];
             for (var i = 0; i < $scope.pro.select.tableData.length; i++) {
@@ -348,31 +360,132 @@ app.controller("HomeController", ["$scope", "$location", "DatabaseService", "Sel
 
     /*Start work here*/
     $scope.jointableoneChange = function (data, index) {
-        if (data != '') {
+        if (data != '' && data != null) {
             $scope.pro.select.JoinTables[index].tableOneSelect = data;
+            $scope.pro.select.JoinTables[index].tableTwo = [];
+            $scope.pro.select.JoinTables[index].tableTwoSelect = '';
+            $scope.pro.select.JoinTables[index].join = '';
+            $scope.pro.select.JoinTables[index].joinTypes = $scope.pro.select.Joins;
+            $scope.pro.select.JoinTables[index].validate = false;
         }
         else {
             $scope.pro.select.JoinTables[index].tableOneSelect = '';
+            $scope.pro.select.JoinTables[index].tableTwo = [];
+            $scope.pro.select.JoinTables[index].tableTwoSelect = '';
+            $scope.pro.select.JoinTables[index].join = '';
+            $scope.pro.select.JoinTables[index].joinTypes = [];
+            $scope.pro.select.JoinTables[index].validate = false;
         }
-        alert(data + "_" + index);
     };
-    /*second table list assign pending*/
+
     $scope.joinoperatorChange = function (data, index) {
-        if (data != '') {
+        if (data != '' && data != null) {
             $scope.pro.select.JoinTables[index].join = data;
             var existing = [];
 
-            $scope.pro.select.JoinTables[index].tableTwo = data;
+            for (var i = 0; i < $scope.pro.select.JoinTables.length; i++) {
+                if ($scope.pro.select.JoinTables[i].tableOneSelect != '') {
+                    existing.push($scope.pro.select.JoinTables[i].tableOneSelect);
+                }
+
+                /*if ($scope.pro.select.JoinTables[i].tableTwoSelect != '') {
+                    existing.push($scope.pro.select.JoinTables[i].tableTwoSelect);
+                }*/
+            }
+
+            var joinTables = $scope.pro.select.JoinTables[0].tableOne;
+            var filterTable = jQuery.grep(joinTables, function (n, i) {
+                if (existing.length != 0) {
+                    var idx = existing.indexOf(n);
+                    if (idx == -1) {
+                        return n;
+                    }
+                }
+                else {
+                    return n;
+                }
+            });
+
+            $scope.pro.select.JoinTables[index].tableTwo = filterTable;
+            $scope.pro.select.JoinTables[i].tableTwoSelect = '';
         }
         else {
-            $scope.pro.select.JoinTables[index].join = data;
+            $scope.pro.select.JoinTables[i].tableTwoSelect = '';
+            $scope.pro.select.JoinTables[i].tableTwo = [];
         }
-        alert(data + "_" + index);
+    };
+
+    $scope.jointabletwoChange = function (data, index) {
+        if (data != '' && data != null) {
+            $scope.pro.select.JoinTables[index].tableTwoSelect = data;
+            var existing = [];
+
+            for (var i = 0; i < $scope.pro.select.JoinTables.length; i++) {
+                if ($scope.pro.select.JoinTables[i].tableOneSelect != '') {
+                    existing.push($scope.pro.select.JoinTables[i].tableOneSelect);
+                }
+            }
+            var joinTables = $scope.pro.select.JoinTables[0].tableOne;
+            var filterTable = jQuery.grep(joinTables, function (n, i) {
+                if (existing.length != 0) {
+                    var idx = existing.indexOf(n);
+                    if (idx == -1) {
+                        return n;
+                    }
+                }
+                else {
+                    return n;
+                }
+            });
+            if (filterTable.length > 1) {
+                $scope.pro.select.JoinTables[index].validate = true;
+            }
+        }
+        else {
+            $scope.pro.select.JoinTables[index].tableTwoSelect = '';
+            $scope.pro.select.JoinTables[index].validate = false;
+        }
+    };
+
+    $scope.RemoveJoin = function (index) {
+        $scope.pro.select.JoinTables.splice(index, 1);
+        if ($scope.pro.select.JoinTables.length == 0) {
+            $scope.pro.select.JoinTables = [];
+            $scope.pro.select.join = false;
+        }
+
+        for (var i = 1; i <= $scope.pro.select.JoinTables.length; i++) {
+            $scope.pro.select.JoinTables[i - 1].model = "joins" + i;
+        }
+    };
+
+    $scope.AddJoins = function (index) {
+        var existing = [];
+
+        for (var i = 0; i < $scope.pro.select.JoinTables.length; i++) {
+            if ($scope.pro.select.JoinTables[i].tableOneSelect != '') {
+                existing.push($scope.pro.select.JoinTables[i].tableOneSelect);
+            }
+        }
+        var joinTables = $scope.pro.select.JoinTables[0].tableOne;
+        var filterTable = jQuery.grep(joinTables, function (n, i) {
+            if (existing.length != 0) {
+                var idx = existing.indexOf(n);
+                if (idx == -1) {
+                    return n;
+                }
+            }
+            else {
+                return n;
+            }
+        });
+        var joinModel = 'joins' + Number($scope.pro.select.JoinTables.length + 1)
+        $scope.pro.select.JoinTables.push({ model: joinModel, tableOne: filterTable, tableTwo: [], tableOneSelect: '', tableTwoSelect: '', joinTypes: [], join: '', validate: false });
     };
 
     $scope.CreateProcedure = function () {
         $scope.Result = SelectProcedure.CreateProcedure($scope.pro);
-    };   
+    };
 }]);
 
 /*

@@ -163,7 +163,7 @@
                                                 </select>
                                             </td>
                                             <td width="25%">
-                                                <select class="input-block-level" ng-model="pro.select.JoinTables.JoinModel[pro.select.JoinTables[$index].model]" ng-options="join for join in pro.select.Joins" ng-change="joinoperatorChange(pro.select.JoinTables.JoinModel[pro.select.JoinTables[$index].model],$index)">
+                                                <select class="input-block-level" ng-model="pro.select.JoinTables.JoinModel[pro.select.JoinTables[$index].model]" ng-options="join for join in pro.select.JoinTables[$index].joinTypes" ng-change="joinoperatorChange(pro.select.JoinTables.JoinModel[pro.select.JoinTables[$index].model],$index)">
                                                     <option value="">--Select--</option>
                                                 </select>
                                             </td>
@@ -173,8 +173,8 @@
                                                 </select>
                                             </td>                                            
                                             <td width="25%">
-                                                <a href="" ng-click="RemoveCondition($index)" class="btn btn-default">Remove</a>
-                                                <a href="" ng-if="pro.select.conditions.length==$index+1 && pro.select.conditions[$index].Validate==true" class="btn btn-default" ng-click="AddCondition($index)">Add</a>
+                                                <a href="" ng-click="RemoveJoin($index)" class="btn btn-default">Remove</a>
+                                                <a href="" ng-if="pro.select.JoinTables.length==$index+1 && pro.select.JoinTables[$index].validate==true" class="btn btn-default" ng-click="AddJoins($index)">Add</a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -208,10 +208,10 @@
 </form>
 <div class="row">
     <div class="col-sm-6">
-        <pre>{{pro.select.tableData|json}}</pre>
+        <!--<pre>{{pro.select.tableData|json}}</pre>-->
     </div>
     <div class="col-sm-6">
-        <pre>{{pro.select.conditions|json}}</pre>
+        <!--<pre>{{pro.select.conditions|json}}</pre>-->
         <pre>{{pro.select.JoinTables|json}}</pre>
     </div>
 </div>

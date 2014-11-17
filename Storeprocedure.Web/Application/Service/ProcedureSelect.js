@@ -89,25 +89,34 @@ app.factory('SelectProcedure', function () {
     var _WhereStatement = function (pro) {
         var where = '';
         for (var i = 0; i < pro.select.conditions.length; i++) {
-            for (var j = 0; j < tableAlise.length; j++) {
-                if (pro.select.conditions[i].table == tableAlise[j].name) {
-                    var value = _Operator(pro.select.conditions[i].optrValue).replace('{}', '@' + pro.select.conditions[i].fieldName);
-                    var condition = '[' + tableAlise[j].alise + '].[' + pro.select.conditions[i].fieldName + ']' + value;
-                    if (where == '') {
-                        if (pro.select.conditions.length > 1) {
-                            where = condition + _logicalOperator(pro.select.conditions[i].logicalOperator) + ' <br/> ';
-                        }
-                        else {
-                            where = condition;
-                        }
-                    }
-                    else {
-                        where = where + condition + _logicalOperator(pro.select.conditions[i].logicalOperator) + ' <br/> ';
-                    }
+            /*for (var j = 0; j < tableAlise.length; j++) {
+                if (pro.select.conditions[i].table == tableAlise[j].name) {*/
+            var value = _Operator(pro.select.conditions[i].optrValue).replace('{}', '@' + pro.select.conditions[i].fieldName);
+            /*var condition = '[' + tableAlise[j].alise + '].[' + pro.select.conditions[i].fieldName + ']' + value;*/
+            var condition = '[' + GetAliseName(pro.select.conditions[i].table) + '].[' + pro.select.conditions[i].fieldName + ']' + value;
+            if (where == '') {
+                if (pro.select.conditions.length > 1) {
+                    where = condition + _logicalOperator(pro.select.conditions[i].logicalOperator) + ' <br/> ';
+                }
+                else {
+                    where = condition;
                 }
             }
+            else {
+                where = where + condition + _logicalOperator(pro.select.conditions[i].logicalOperator) + ' <br/> ';
+            }
+            /*}
+        }*/
         }
         return where;
+    };
+
+    var GetAliseName = function (tableName) {
+        for (var k = 0; k < tableAlise.length; k++) {
+            if (tableAlise[k].name == tableName) {
+                return tableAlise[k].alise;
+            }
+        }
     };
 
     var _Operator = function (operator) {
