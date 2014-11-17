@@ -27,5 +27,6 @@ D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\
 D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Web.Http.xml
 D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Web.Http.Cors.xml
 D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Web.Http.WebHost.xml
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.csprojResolveAssemblyReference.cache
 D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.dll
 D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.pdb
