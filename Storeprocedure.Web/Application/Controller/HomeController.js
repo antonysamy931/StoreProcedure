@@ -21,9 +21,13 @@ app.controller("HomeController", ["$scope", "$location", "DatabaseService", "Sel
         var table = $scope.dataBase.Tables[i];
         var RelationTable = [];
 
-        for (var j = 0; j < $scope.dataBase.Tables[i].Relations.length; j++) {
+        /*for (var j = 0; j < $scope.dataBase.Tables[i].Relations.length; j++) {
             RelationTable.push($scope.dataBase.Tables[i].Relations[j].PrimaryKeyTable);
+        }*/
+        for (var j = 0; j < $scope.dataBase.Tables[i].ParentChildTables.length; j++) {
+            RelationTable.push($scope.dataBase.Tables[i].ParentChildTables[j].TableName);
         }
+
         $scope.dataBase.tablesRelation.push({ Name: $scope.dataBase.Tables[i].Table_Name, Relation: RelationTable });
 
         var ColumnNames = [];

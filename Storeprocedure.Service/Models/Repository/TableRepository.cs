@@ -27,6 +27,7 @@ namespace Storeprocedure.Service.Models.Repository
             string Command = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' and TABLE_NAME NOT LIKE '%sysdiagrams%'";
 
             con.Open();
+
             using (OleDbCommand cmd = new OleDbCommand(Command, con))
             {
                 using (OleDbDataReader reader = cmd.ExecuteReader())
@@ -89,6 +90,64 @@ namespace Storeprocedure.Service.Models.Repository
                                 oTable.Relations = _RelationShips;
                             }
                         }
+
+                        string childTableCommand = "select a.foreign_table,a.foreign_column,a.parent_column as reference from (select cast(f.name as varchar(255)) as foreign_key_name, cast(c.name as varchar(255)) as foreign_table,";
+                        childTableCommand = childTableCommand + " cast(fc.name as varchar(255)) as foreign_column, cast(p.name as varchar(255)) as parent_table, cast(rc.name as varchar(255)) as parent_column from  sysobjects f";
+                        childTableCommand = childTableCommand + " inner join sysobjects c on f.parent_obj = c.id inner join sysreferences r on f.id = r.constid inner join sysobjects p on r.rkeyid = p.id inner join syscolumns rc on r.rkeyid = rc.id and r.rkey1 = rc.colid";
+                        childTableCommand = childTableCommand + " inner join syscolumns fc on r.fkeyid = fc.id and r.fkey1 = fc.colid where f.type = 'F') as a where a.parent_table='" + reader.GetValue(2).ToString() + "'";
+
+                        List<ParentChildTable> _ParentChildTable = new List<ParentChildTable>();
+
+                        using (OleDbCommand cCommand = new OleDbCommand(childTableCommand, con))
+                        {
+                            using (OleDbDataReader cReader = cCommand.ExecuteReader())
+                            {
+                                List<ChildTable> _ChildTable = new List<ChildTable>();
+                                while (cReader.Read())
+                                {
+                                    ChildTable _childTable = new ChildTable();
+                                    _childTable.ForignKeyTable = cReader.GetValue(0).ToString();
+                                    _childTable.ForignKeyColumn = cReader.GetValue(1).ToString();
+                                    _childTable.PrimaryKeyColumn = cReader.GetValue(2).ToString();
+                                    _ChildTable.Add(_childTable);
+
+                                    ParentChildTable _parentChildTable = new ParentChildTable();
+                                    _parentChildTable.TableName = cReader.GetValue(0).ToString();
+                                    _parentChildTable.KeyColumn = cReader.GetValue(1).ToString();
+                                    _parentChildTable.ReferenceColumn = cReader.GetValue(2).ToString();
+                                    _ParentChildTable.Add(_parentChildTable);
+                                }
+                                oTable.ChildTables = _ChildTable;
+                            }
+                        }
+
+                        string parentTableCommand = "select a.parent_table,a.parent_column,a.foreign_column as reference from (select cast(f.name as varchar(255)) as foreign_key_name, cast(c.name as varchar(255)) as foreign_table, cast(fc.name as varchar(255)) as foreign_column,";
+                        parentTableCommand = parentTableCommand + " cast(p.name as varchar(255)) as parent_table , cast(rc.name as varchar(255)) as parent_column from  sysobjects f inner join sysobjects c on f.parent_obj = c.id inner join sysreferences r on f.id = r.constid";
+                        parentTableCommand = parentTableCommand + " inner join sysobjects p on r.rkeyid = p.id inner join syscolumns rc on r.rkeyid = rc.id and r.rkey1 = rc.colid inner join syscolumns fc on r.fkeyid = fc.id and r.fkey1 = fc.colid where f.type = 'F') as a where a.foreign_table='" + reader.GetValue(2).ToString() + "'";
+
+                        using (OleDbCommand pCommand = new OleDbCommand(parentTableCommand, con))
+                        {
+                            using (OleDbDataReader pReader = pCommand.ExecuteReader())
+                            {
+                                List<ParentTable> _ParentTable = new List<ParentTable>();
+                                while(pReader.Read()){
+                                    ParentTable _parentTable = new ParentTable();
+                                    _parentTable.PrimaryKeyTable = pReader.GetValue(0).ToString();
+                                    _parentTable.PrimaryKeyColumn = pReader.GetValue(1).ToString();
+                                    _parentTable.ForignKeyColumn = pReader.GetValue(2).ToString();
+                                    _ParentTable.Add(_parentTable);
+
+                                    ParentChildTable _parentChildTable = new ParentChildTable();
+                                    _parentChildTable.TableName = pReader.GetValue(0).ToString();
+                                    _parentChildTable.KeyColumn = pReader.GetValue(1).ToString();
+                                    _parentChildTable.ReferenceColumn = pReader.GetValue(2).ToString();
+                                    _ParentChildTable.Add(_parentChildTable);
+                                }
+                                oTable.ParentTables = _ParentTable;
+                            }
+                        }
+
+                        oTable.ParentChildTables = _ParentChildTable;
 
                         table.Add(oTable);
                     }

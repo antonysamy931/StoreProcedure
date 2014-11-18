@@ -171,6 +171,10 @@ app.factory('SelectProcedure', function () {
         return symbol;
     };
 
+    var _join = function (join) {
+
+    };
+
     selectProcedureFactory.CreateProcedure = _CreateProcedure;
 
     return selectProcedureFactory;

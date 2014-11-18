@@ -12,6 +12,9 @@ namespace Storeprocedure.Service.Models.ViewModel
         public List<Column> Columns { get; set; }
         public string PrimariKey { get; set; }
         public List<RelationShip> Relations { get; set; }
+        public List<ChildTable> ChildTables { get; set; }
+        public List<ParentTable> ParentTables { get; set; }
+        public List<ParentChildTable> ParentChildTables { get; set; }
     }
 
     public class Column
@@ -25,6 +28,27 @@ namespace Storeprocedure.Service.Models.ViewModel
         public string ForignKeyColumn { get; set; }
         public string PrimaryKeyTable { get; set; }
         public string PrimaryKeyColumn { get; set; }
+    }
+
+    public class ChildTable
+    {
+        public string ForignKeyTable { get; set; }
+        public string ForignKeyColumn { get; set; }
+        public string PrimaryKeyColumn { get; set; }
+    }
+
+    public class ParentTable
+    {
+        public string PrimaryKeyTable { get; set; }
+        public string PrimaryKeyColumn { get; set; }
+        public string ForignKeyColumn { get; set; }
+    }
+
+    public class ParentChildTable
+    {
+        public string TableName { get; set; }
+        public string KeyColumn { get; set; }
+        public string ReferenceColumn { get; set; }
     }
 
     public class Database
