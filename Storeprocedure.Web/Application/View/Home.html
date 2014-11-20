@@ -67,7 +67,7 @@
                                             <a href="" ng-if="$index!=0" class="btn btn-default" ng-click="RemoveTable($index)">Remove</a>
                                         </div>
                                         <div class="col-sm-1">
-                                            <a ng-if="pro.select.tableData.length == $index+1 && pro.select.tableData[0].relationTables.length > $index" class="btn btn-default" href="" ng-click="AddSelectTable($index)">Add</a>
+                                            <a ng-if="pro.select.tableData.length == $index+1 && pro.select.tableData[$index].relationTables.length > 0" class="btn btn-default" href="" ng-click="AddSelectTable($index)">Add</a>
                                         </div>
                                     </div>
                                     <div class="col-sm-12">

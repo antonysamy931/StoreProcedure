@@ -4,7 +4,7 @@
 app.factory('SelectProcedure', function () {
     var selectProcedureFactory = {};
     var tableAlise = [];
-    var _CreateProcedure = function (pro) {
+    var _CreateProcedure = function (pro, database) {
         var procedure = "<span class='blue'>CREATE PROCEDURE</span> [" + pro.Name.toUpperCase() + "]<br/>";
         procedure = procedure + "(<br/>";
 
@@ -21,7 +21,7 @@ app.factory('SelectProcedure', function () {
         procedure = procedure + "<span class='blue'>BEGIN</span><br/><br/>";
 
         /*Statement Starts*/
-        procedure = procedure + _SelectStatement(pro);
+        procedure = procedure + _SelectStatement(pro, database);
         /*Statement End*/
 
         /*Add condition*/
@@ -50,7 +50,7 @@ app.factory('SelectProcedure', function () {
         return params;
     };
 
-    var _SelectStatement = function (pro) {
+    var _SelectStatement = function (pro, database) {
         var selectField = "";
         var tables = "";
         for (var j = 0; j < pro.select.tableData.length; j++) {
@@ -62,7 +62,7 @@ app.factory('SelectProcedure', function () {
                         selectField = selectField + "[t" + Number(j + 1) + "]." + fields[i] + ",";
                     }
                     else {
-                        selectField = selectField + "[t" + Number(j + 1) + "]." + fields[i];
+                        selectField = selectField + ",[t" + Number(j + 1) + "]." + fields[i];
                     }
                 }
             }
@@ -83,7 +83,8 @@ app.factory('SelectProcedure', function () {
             }
             tableAlise.push({ name: pro.select.tableData[j].tableName, alise: 't' + Number(j + 1) });
         }
-        return "<span class='blue'>SELECT</span> " + selectField + " <span class='blue'>FROM</span> <br/>" + tables;
+        var joinstatement = _join(pro, database);
+        return "<span class='blue'>SELECT</span> " + selectField + " <span class='blue'>FROM</span> <br/>" + joinstatement;
     };
 
     var _WhereStatement = function (pro) {
@@ -171,8 +172,58 @@ app.factory('SelectProcedure', function () {
         return symbol;
     };
 
-    var _join = function (join) {
-
+    var _join = function (pro, database) {
+        var _joinStatement = '';
+        var tableTwo = '';
+        for (var i = 0; i < pro.select.JoinTables.length; i++) {            
+            if (_joinStatement == '') {
+                var tableOne = pro.select.JoinTables[i].tableOneSelect;
+                if (tableOne != '') {
+                    var tableOneIdx = database.tablesNames.indexOf(tableOne);
+                    if (tableOneIdx != -1) {
+                        var parentchildRelation = database.Tables[tableOneIdx].ParentChildTables;
+                        var joinTableName;
+                        var joinReferenceColumn;
+                        var currenReferenceColumn;
+                        for (var j = 0; j < parentchildRelation.length; j++) {
+                            if (parentchildRelation[j].TableName == pro.select.JoinTables[i].tableTwoSelect) {
+                                joinTableName = parentchildRelation[j].TableName;
+                                joinReferenceColumn = parentchildRelation[j].KeyColumn;
+                                currenReferenceColumn = parentchildRelation[j].ReferenceColumn;
+                            }
+                        }
+                        _joinStatement = "[" + tableOne + "] <span class='blue'>AS</span> " + GetAliseName(tableOne) + " <span class='blue'>" + pro.select.JoinTables[i].join + "</span>";
+                        _joinStatement = _joinStatement + " [" + joinTableName + "] <span class='blue'>AS</span> " + GetAliseName(joinTableName) + " <span class='blue'> ON</span>";
+                        _joinStatement = _joinStatement + " [" + GetAliseName(tableOne) + "].[" + currenReferenceColumn + "] = [" + GetAliseName(joinTableName) + "].[" + joinReferenceColumn + "]";
+                        tableTwo = joinTableName;
+                    }
+                }
+            }
+            else {
+                if (tableTwo != '') {
+                    var tableOne = tableTwo;
+                    var tableOneIdx = database.tablesNames.indexOf(tableOne);
+                    if (tableOneIdx != -1) {
+                        var parentchildRelation = database.Tables[tableOneIdx].ParentChildTables;
+                        var joinTableName;
+                        var joinReferenceColumn;
+                        var currenReferenceColumn;
+                        for (var j = 0; j < parentchildRelation.length; j++) {
+                            if (parentchildRelation[j].TableName == pro.select.JoinTables[i].tableTwoSelect) {
+                                joinTableName = parentchildRelation[j].TableName;
+                                joinReferenceColumn = parentchildRelation[j].KeyColumn;
+                                currenReferenceColumn = parentchildRelation[j].ReferenceColumn;
+                            }
+                        }
+                        _joinStatement = _joinStatement + " <span class='blue'>" + pro.select.JoinTables[i].join + "</span>";
+                        _joinStatement = _joinStatement + " [" + joinTableName + "] <span class='blue'>AS</span> " + GetAliseName(joinTableName) + " <span class='blue'> ON</span>";
+                        _joinStatement = _joinStatement + " [" + GetAliseName(tableOne) + "].[" + currenReferenceColumn + "] = [" + GetAliseName(joinTableName) + "].[" + joinReferenceColumn + "]";
+                        tableTwo = joinTableName;
+                    }
+                }
+            }
+        }
+        return _joinStatement;
     };
 
     selectProcedureFactory.CreateProcedure = _CreateProcedure;

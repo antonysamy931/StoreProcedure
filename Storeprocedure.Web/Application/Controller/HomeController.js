@@ -100,6 +100,37 @@ app.controller("HomeController", ["$scope", "$location", "DatabaseService", "Sel
         return arr;
     };
 
+    var existingTables = function () {
+        var existingTable = [];
+
+        for (var i = 0; i < $scope.pro.select.tableData.length; i++) {
+            if (existingTable.length == 0) {
+                existingTable.push($scope.pro.select.tableData[i].tableName);
+            }
+            else {
+                var idx = existingTable.indexOf($scope.pro.select.tableData[i].tableName);
+                if (idx == -1) {
+                    existingTable.push($scope.pro.select.tableData[i].tableName);
+                }
+            }
+        }
+        return existingTable;
+    };
+
+    var grapArray = function (filterArray, existArray) {
+        var filter = jQuery.grep(filterArray, function (n, i) {
+            if (existArray.length != 0) {
+                var idx = existArray.indexOf(n);
+                if (idx == -1) {
+                    return n;
+                }
+            }
+            else {
+                return n;
+            }
+        });
+        return filter
+    };
 
     $scope.tableChange = function (TableName, index) {
         var removeItem = $scope.pro.select.tableData.length - (index + 1)
@@ -109,9 +140,7 @@ app.controller("HomeController", ["$scope", "$location", "DatabaseService", "Sel
         var tableIndex = $scope.dataBase.tablesNames.indexOf(TableName);
         if (tableIndex > -1) {
             $scope.pro.select.tableData[index].tableColumns = $scope.dataBase.tablesColumns[tableIndex].Columns;
-            if (index == 0) {
-                $scope.pro.select.tableData[index].relationTables = removeDuplicatesInPlace($scope.dataBase.tablesRelation[tableIndex].Relation);
-            }
+            $scope.pro.select.tableData[index].relationTables = grapArray(removeDuplicatesInPlace($scope.dataBase.tablesRelation[tableIndex].Relation), existingTables());
             $scope.pro.select.tableData[index].selectedColumns = [];
         }
 
@@ -161,26 +190,33 @@ app.controller("HomeController", ["$scope", "$location", "DatabaseService", "Sel
 
     $scope.AddSelectTable = function (index) {
         var tablesRelations = $scope.pro.select.tableData[0].relationTables;
-        var relationTable = $scope.pro.select.tableData[0].relationTables;
-        var existingTable = [];
+        //var relationTable = $scope.pro.select.tableData[0].relationTables;
+        var relationTable = [];
+        var tableName = $scope.pro.select.tableData[index].tableName;
+        var tableIndex = $scope.dataBase.tablesNames.indexOf(tableName);
+        if (tableIndex > -1) {
+            relationTable = removeDuplicatesInPlace($scope.dataBase.tablesRelation[tableIndex].Relation);
+        }
 
-        for (var i = 0; i < $scope.pro.select.tableData.length; i++) {
+        var existingTable = existingTables();
+
+        /*for (var i = 0; i < $scope.pro.select.tableData.length; i++) {
             if (existingTable.length == 0) {
-                if (i != 0) {
-                    existingTable.push($scope.pro.select.tableData[i].tableName);
-                }
+
+                existingTable.push($scope.pro.select.tableData[i].tableName);
+
             }
             else {
                 var idx = existingTable.indexOf($scope.pro.select.tableData[i].tableName);
                 if (idx == -1) {
-                    if (i != 0) {
-                        existingTable.push($scope.pro.select.tableData[i].tableName);
-                    }
+
+                    existingTable.push($scope.pro.select.tableData[i].tableName);
+
                 }
             }
-        }
+        }*/
 
-        var tables = jQuery.grep(relationTable, function (n, i) {
+        /*var tables = jQuery.grep(relationTable, function (n, i) {
             if (existingTable.length != 0) {
                 var idx = existingTable.indexOf(n);
                 if (idx == -1) {
@@ -190,23 +226,45 @@ app.controller("HomeController", ["$scope", "$location", "DatabaseService", "Sel
             else {
                 return n;
             }
-        });
+        });*/
 
-        var defaultTableName = tables[0];
-        var tableIndex = $scope.dataBase.tablesNames.indexOf(defaultTableName);
-        var columns = $scope.dataBase.tablesColumns[tableIndex].Columns;
+        var tables = grapArray(relationTable, existingTable);
 
-        for (var i = 0; i < columns.length; i++) {
-            columns[i].Checked = false;
+        if (tables.length > 0) {
+            var defaultTableName = tables[0];
+            var tableIndex = $scope.dataBase.tablesNames.indexOf(defaultTableName);
+
+            var columns = $scope.dataBase.tablesColumns[tableIndex].Columns;
+
+            for (var i = 0; i < columns.length; i++) {
+                columns[i].Checked = false;
+            }
+
+            var model = "table" + Number($scope.pro.select.tableData.length + 1);
+
+            var relations = $scope.dataBase.tablesRelation[tableIndex].Relation;
+            /*var rTables = jQuery.grep(relations, function (n, i) {
+                if (existingTable.length != 0) {
+                    var idx = existingTable.indexOf(n);
+                    if (idx == -1) {
+                        return n;
+                    }
+                }
+                else {
+                    return n;
+                }
+            });*/
+            var rTables = grapArray(relations, existingTable);
+            $scope.pro.select.tableData.push({ model: model, tableCollection: tables, tableName: defaultTableName, tableColumns: columns, selectedColumns: [], relationTables: rTables });
+            $scope.pro.select.tableModel[$scope.pro.select.tableData[index + 1].model] = defaultTableName;
+            $scope.pro.select.condition = false;
         }
 
-        var model = "table" + Number($scope.pro.select.tableData.length + 1);
-
-        //var relations = $scope.dataBase.tablesRelation[tableIndex].Relation;
-
-        $scope.pro.select.tableData.push({ model: model, tableCollection: tables, tableName: defaultTableName, tableColumns: columns, selectedColumns: [], relationTables: [] });
-        $scope.pro.select.tableModel[$scope.pro.select.tableData[index + 1].model] = defaultTableName;
+        $scope.pro.select.conditions = [];
         $scope.pro.select.condition = false;
+
+        $scope.pro.select.JoinTables = [];
+        $scope.pro.select.join = false;
     };
 
     $scope.RemoveTable = function (index) {
@@ -411,11 +469,11 @@ app.controller("HomeController", ["$scope", "$location", "DatabaseService", "Sel
             });
 
             $scope.pro.select.JoinTables[index].tableTwo = filterTable;
-            $scope.pro.select.JoinTables[i].tableTwoSelect = '';
+            $scope.pro.select.JoinTables[index].tableTwoSelect = '';
         }
         else {
-            $scope.pro.select.JoinTables[i].tableTwoSelect = '';
-            $scope.pro.select.JoinTables[i].tableTwo = [];
+            $scope.pro.select.JoinTables[index].tableTwoSelect = '';
+            $scope.pro.select.JoinTables[index].tableTwo = [];
         }
     };
 
@@ -487,8 +545,8 @@ app.controller("HomeController", ["$scope", "$location", "DatabaseService", "Sel
         $scope.pro.select.JoinTables.push({ model: joinModel, tableOne: filterTable, tableTwo: [], tableOneSelect: '', tableTwoSelect: '', joinTypes: [], join: '', validate: false });
     };
 
-    $scope.CreateProcedure = function () {
-        $scope.Result = SelectProcedure.CreateProcedure($scope.pro);
+    $scope.CreateProcedure = function () {        
+        $scope.Result = SelectProcedure.CreateProcedure($scope.pro, $scope.dataBase);
     };
 }]);
 
