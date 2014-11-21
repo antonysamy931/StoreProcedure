@@ -4,7 +4,10 @@
 app.factory('SelectProcedure', function () {
     var selectProcedureFactory = {};
     var tableAlise = [];
+    var tableNames = [];
     var _CreateProcedure = function (pro, database) {
+        tableAlise = [];
+        tableNames = [];
         var procedure = "<span class='blue'>CREATE PROCEDURE</span> [" + pro.Name.toUpperCase() + "]<br/>";
         procedure = procedure + "(<br/>";
 
@@ -34,6 +37,7 @@ app.factory('SelectProcedure', function () {
 
         procedure = procedure + "<br/><br/><span class='blue'>END</span>";
         tableAlise = [];
+        tableNames = [];
         return procedure;
     };
 
@@ -82,6 +86,7 @@ app.factory('SelectProcedure', function () {
                 tables = tables + " ,[" + pro.select.tableData[j].tableName + "] <span class='blue'>AS</span> t" + Number(j + 1);
             }
             tableAlise.push({ name: pro.select.tableData[j].tableName, alise: 't' + Number(j + 1) });
+            tableNames.push(pro.select.tableData[j].tableName);
         }
         var joinstatement = _join(pro, database);
         return "<span class='blue'>SELECT</span> " + selectField + " <span class='blue'>FROM</span> <br/>" + joinstatement;
@@ -174,53 +179,165 @@ app.factory('SelectProcedure', function () {
 
     var _join = function (pro, database) {
         var _joinStatement = '';
+
         var tableTwo = '';
-        for (var i = 0; i < pro.select.JoinTables.length; i++) {            
-            if (_joinStatement == '') {
-                var tableOne = pro.select.JoinTables[i].tableOneSelect;
-                if (tableOne != '') {
-                    var tableOneIdx = database.tablesNames.indexOf(tableOne);
-                    if (tableOneIdx != -1) {
-                        var parentchildRelation = database.Tables[tableOneIdx].ParentChildTables;
-                        var joinTableName;
-                        var joinReferenceColumn;
-                        var currenReferenceColumn;
-                        for (var j = 0; j < parentchildRelation.length; j++) {
-                            if (parentchildRelation[j].TableName == pro.select.JoinTables[i].tableTwoSelect) {
-                                joinTableName = parentchildRelation[j].TableName;
-                                joinReferenceColumn = parentchildRelation[j].KeyColumn;
-                                currenReferenceColumn = parentchildRelation[j].ReferenceColumn;
+
+        var JoinTable = [];
+
+        if (pro.select.JoinTables.length > 0) {
+            for (var i = 0; i < pro.select.JoinTables.length; i++) {
+                if (_joinStatement == '') {
+                    var tableOne = pro.select.JoinTables[i].tableOneSelect;
+                    if (tableOne != '') {
+                        var tableOneIdx = database.tablesNames.indexOf(tableOne);
+                        if (tableOneIdx != -1) {
+                            var parentchildRelation = database.Tables[tableOneIdx].ParentChildTables;
+                            var joinTableName;
+                            var joinReferenceColumn;
+                            var currenReferenceColumn;
+                            for (var j = 0; j < parentchildRelation.length; j++) {
+                                if (parentchildRelation[j].TableName == pro.select.JoinTables[i].tableTwoSelect) {
+                                    joinTableName = parentchildRelation[j].TableName;
+                                    joinReferenceColumn = parentchildRelation[j].KeyColumn;
+                                    currenReferenceColumn = parentchildRelation[j].ReferenceColumn;
+                                }
                             }
+                            _joinStatement = "[" + tableOne + "] <span class='blue'>AS</span> " + GetAliseName(tableOne) + " <span class='blue'>" + pro.select.JoinTables[i].join + "</span>";
+                            _joinStatement = _joinStatement + " [" + joinTableName + "] <span class='blue'>AS</span> " + GetAliseName(joinTableName) + " <span class='blue'> ON</span>";
+                            _joinStatement = _joinStatement + " [" + GetAliseName(tableOne) + "].[" + currenReferenceColumn + "] = [" + GetAliseName(joinTableName) + "].[" + joinReferenceColumn + "]";
+                            tableTwo = joinTableName;
                         }
-                        _joinStatement = "[" + tableOne + "] <span class='blue'>AS</span> " + GetAliseName(tableOne) + " <span class='blue'>" + pro.select.JoinTables[i].join + "</span>";
-                        _joinStatement = _joinStatement + " [" + joinTableName + "] <span class='blue'>AS</span> " + GetAliseName(joinTableName) + " <span class='blue'> ON</span>";
-                        _joinStatement = _joinStatement + " [" + GetAliseName(tableOne) + "].[" + currenReferenceColumn + "] = [" + GetAliseName(joinTableName) + "].[" + joinReferenceColumn + "]";
-                        tableTwo = joinTableName;
                     }
+                }
+                else {
+                    if (tableTwo != '') {
+                        var tableOne = tableTwo;
+                        var tableOneIdx = database.tablesNames.indexOf(tableOne);
+                        if (tableOneIdx != -1) {
+                            var parentchildRelation = database.Tables[tableOneIdx].ParentChildTables;
+                            var joinTableName;
+                            var joinReferenceColumn;
+                            var currenReferenceColumn;
+                            for (var j = 0; j < parentchildRelation.length; j++) {
+                                if (parentchildRelation[j].TableName == pro.select.JoinTables[i].tableTwoSelect) {
+                                    joinTableName = parentchildRelation[j].TableName;
+                                    joinReferenceColumn = parentchildRelation[j].KeyColumn;
+                                    currenReferenceColumn = parentchildRelation[j].ReferenceColumn;
+                                }
+                            }
+                            _joinStatement = _joinStatement + " <span class='blue'>" + pro.select.JoinTables[i].join + "</span>";
+                            _joinStatement = _joinStatement + " [" + joinTableName + "] <span class='blue'>AS</span> " + GetAliseName(joinTableName) + " <span class='blue'> ON</span>";
+                            _joinStatement = _joinStatement + " [" + GetAliseName(tableOne) + "].[" + currenReferenceColumn + "] = [" + GetAliseName(joinTableName) + "].[" + joinReferenceColumn + "]";
+                            tableTwo = joinTableName;
+                        }
+                    }
+                }
+
+                if (i == 0) {
+                    JoinTable.push(pro.select.JoinTables[i].tableOneSelect);
+                }
+                JoinTable.push(pro.select.JoinTables[i].tableTwoSelect)
+            }
+
+            if (JoinTable.length != tableNames.length) {
+                var filterRecord = jQuery.grep(tableNames, function (n, i) {
+                    var idx = JoinTable.indexOf(n);
+                    if (idx == -1) {
+                        return n;
+                    }
+                });
+                var z = 0;
+                var lastJoinTable = "";
+                lastJoinTable = JoinTable[JoinTable.length - 1];
+                while (z < filterRecord.length) {
+                    var tableOne = ""
+                    var tableOneReference = "";
+                    var tableTwo = "";
+                    var tableTwoReference = "";
+
+                    var tableOneIdx = database.tablesNames.indexOf(lastJoinTable);
+                    var tableOneParentChild = database.Tables[tableOneIdx].ParentChildTables;
+                    for (var k = 0; k < tableOneParentChild.length; k++) {
+                        if (tableOneParentChild[k].TableName == filterRecord[z]) {
+                            tableOne = lastJoinTable;
+                            tableOneReference = tableOneParentChild[k].ReferenceColumn;
+                        }
+                    }
+
+                    var tableTwoIdx = database.tablesNames.indexOf(filterRecord[z]);
+                    var tableTwoParentChild = database.Tables[tableTwoIdx].ParentChildTables;
+                    for (var k = 0; k < tableTwoParentChild.length; k++) {
+                        if (tableTwoParentChild[k].TableName == lastJoinTable) {
+                            tableTwo = filterRecord[z];
+                            tableTwoReference = tableTwoParentChild[k].ReferenceColumn;
+                        }
+                    }
+
+                    if (_joinStatement != '') {
+                        _joinStatement = _joinStatement + " <span class='blue'> INNER JOIN </span> ";
+                        _joinStatement = _joinStatement + "[" + tableTwo + "] <span class='blue'>AS</span> " + GetAliseName(tableTwo) + " <span class='blue'> ON </span>";
+                        _joinStatement = _joinStatement + "[" + GetAliseName(tableOne) + "].[" + tableOneReference + "] = [" + GetAliseName(tableTwo) + "].[" + tableTwoReference + "]";
+                    }
+                    lastJoinTable = tableTwo;
+                    z++;
                 }
             }
-            else {
-                if (tableTwo != '') {
-                    var tableOne = tableTwo;
-                    var tableOneIdx = database.tablesNames.indexOf(tableOne);
-                    if (tableOneIdx != -1) {
-                        var parentchildRelation = database.Tables[tableOneIdx].ParentChildTables;
-                        var joinTableName;
-                        var joinReferenceColumn;
-                        var currenReferenceColumn;
-                        for (var j = 0; j < parentchildRelation.length; j++) {
-                            if (parentchildRelation[j].TableName == pro.select.JoinTables[i].tableTwoSelect) {
-                                joinTableName = parentchildRelation[j].TableName;
-                                joinReferenceColumn = parentchildRelation[j].KeyColumn;
-                                currenReferenceColumn = parentchildRelation[j].ReferenceColumn;
-                            }
+        }
+        else {
+            var i = 0;
+            var j = 1;
+            var parentTable = "";
+            while (j != tableAlise.length) {
+                var tableOne = "";
+                var tableOneReference = "";
+                var tableTwo = "";
+                var tableTwoReference = "";
+
+                if (i == 0) {
+                    var tableOneIdx = database.tablesNames.indexOf(tableAlise[i].name);
+                    var tableOneParentChild = database.Tables[tableOneIdx].ParentChildTables;
+                    for (var k = 0; k < tableOneParentChild.length; k++) {
+                        if (tableOneParentChild[k].TableName == tableAlise[j].name) {
+                            tableOne = tableAlise[i].name;
+                            tableOneReference = tableOneParentChild[k].ReferenceColumn;
                         }
-                        _joinStatement = _joinStatement + " <span class='blue'>" + pro.select.JoinTables[i].join + "</span>";
-                        _joinStatement = _joinStatement + " [" + joinTableName + "] <span class='blue'>AS</span> " + GetAliseName(joinTableName) + " <span class='blue'> ON</span>";
-                        _joinStatement = _joinStatement + " [" + GetAliseName(tableOne) + "].[" + currenReferenceColumn + "] = [" + GetAliseName(joinTableName) + "].[" + joinReferenceColumn + "]";
-                        tableTwo = joinTableName;
                     }
                 }
+
+                var tableTwoIdx = database.tablesNames.indexOf(tableAlise[j].name);
+                var tableTwoParentChild = database.Tables[tableTwoIdx].ParentChildTables;
+                for (var k = 0; k < tableTwoParentChild.length; k++) {
+                    if (tableTwoParentChild[k].TableName == tableAlise[j - 1].name) {
+                        tableTwo = tableAlise[j].name;
+                        tableTwoReference = tableTwoParentChild[k].ReferenceColumn;
+                    }
+                }
+
+                if (parentTable != '') {
+                    tableOne = parentTable;
+                    var tableOneIdx = database.tablesNames.indexOf(tableOne);
+                    var tableOneParentChild = database.Tables[tableOneIdx].ParentChildTables;
+                    for (var k = 0; k < tableOneParentChild.length; k++) {
+                        if (tableOneParentChild[k].TableName == tableTwo) {
+                            tableOneReference = tableOneParentChild[k].ReferenceColumn;
+                        }
+                    }
+                }
+
+                if (_joinStatement == '') {
+                    _joinStatement = "[" + tableOne + "] <span class='blue'>AS</span> " + GetAliseName(tableOne) + " <span class='blue'> INNER JOIN </span>";
+                    _joinStatement = _joinStatement + "[" + tableTwo + "] <span class='blue'>AS</span> " + GetAliseName(tableTwo) + " <span class='blue'> ON </span>";
+                    _joinStatement = _joinStatement + "[" + GetAliseName(tableOne) + "].[" + tableOneReference + "] = [" + GetAliseName(tableTwo) + "].[" + tableTwoReference + "]";
+                }
+                else {
+                    _joinStatement = _joinStatement + " <span class='blue'> INNER JOIN </span> ";
+                    _joinStatement = _joinStatement + "[" + tableTwo + "] <span class='blue'>AS</span> " + GetAliseName(tableTwo) + " <span class='blue'> ON </span>";
+                    _joinStatement = _joinStatement + "[" + tableAlise[j - 1].alise + "].[" + tableOneReference + "] = [" + GetAliseName(tableTwo) + "].[" + tableTwoReference + "]";
+                }
+
+                parentTable = tableTwo;
+                i++;
+                j++;
             }
         }
         return _joinStatement;
