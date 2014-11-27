@@ -149,7 +149,7 @@
                                         <tr>
                                             <td width="25%">Left Table</td>
                                             <td width="25%">Join</td>
-                                            <td width="25%">Right Table</td>                                            
+                                            <td width="25%">Right Table</td>
                                             <td width="25%">Action</td>
                                         </tr>
                                     </tbody>
@@ -171,7 +171,7 @@
                                                 <select class="input-block-level" ng-model="pro.select.JoinTables.tableTwoModel[pro.select.JoinTables[$index].model]" ng-options="table for table in pro.select.JoinTables[$index].tableTwo" ng-change="jointabletwoChange(pro.select.JoinTables.tableTwoModel[pro.select.JoinTables[$index].model],$index)">
                                                     <option value="">--Select--</option>
                                                 </select>
-                                            </td>                                            
+                                            </td>
                                             <td width="25%">
                                                 <a href="" ng-click="RemoveJoin($index)" class="btn btn-default">Remove</a>
                                                 <a href="" ng-if="pro.select.JoinTables.length==$index+1 && pro.select.JoinTables[$index].validate==true" class="btn btn-default" ng-click="AddJoins($index)">Add</a>
@@ -206,18 +206,24 @@
             </div>
         </div>
 </form>
-<div class="row">
-    <div class="col-sm-6">
-        <!--<pre>{{pro.select.tableData|json}}</pre>-->
-    </div>
-    <div class="col-sm-6">
-        <!--<pre>{{pro.select.conditions|json}}</pre>-->
-        <pre>{{pro.select.JoinTables|json}}</pre>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <div ng-bind-html="Result"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <!--<pre>{{pro.select.tableData|json}}</pre>-->
+        </div>
+        <div class="col-sm-6">
+            <!--<pre>{{pro.select.conditions|json}}</pre>-->
+            <pre>{{pro.select.JoinTables|json}}</pre>
+        </div>
     </div>
 </div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div ng-bind-html="Result"></div>
+        </div>
+    </div>
+</div>
+
+
 

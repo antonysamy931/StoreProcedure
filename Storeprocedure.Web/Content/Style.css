@@ -252,3 +252,18 @@ span.blue
 span.red {
   color: red;
 }
+
+.loader {
+    position:absolute;
+    top:50%;
+    left:50%;
+}
+.load-wrapper {
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.5);
+  height: 900px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}

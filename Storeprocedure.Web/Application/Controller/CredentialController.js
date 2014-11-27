@@ -10,16 +10,24 @@ app.controller("CredentialController", ["$scope", "$location", "localStorageServ
     $scope.Credential.Provider = $scope.Providers[0].value;
 
     $scope.dataBase = [];
+    $scope.loader = false;
+    $scope.ServerError = false;
 
     $scope.GetDatabase = function () {
+        $scope.loader = true;
         DatabaseService.credential = $scope.Credential;
-        DatabaseService.getDatabase().then(function (response) {
-            if (response.status === 200) {
-                DatabaseService.data = response.data;
-                localStorageService.set("DataBase", response.data);
+        DatabaseService.getDatabase().success(function (data, status, headers, config) {
+            if (status === 200) {
+                DatabaseService.data = data;
+                localStorageService.set("DataBase", data);
                 $location.path("/Home");
             }
+        }).error(function (data, status, headers, config) {
+            $scope.ServerError = true;
+            $scope.ErrorMessage = data.Message;
+            $scope.loader = false;            
         });
         $scope.Credential.ServerName = $scope.Credential.ServerName.replace(',', '\\');
+
     };
 }]);
