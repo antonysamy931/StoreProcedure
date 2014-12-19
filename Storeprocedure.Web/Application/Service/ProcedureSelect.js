@@ -352,8 +352,7 @@ app.factory('SelectProcedure', function () {
                 else {
                     _joinStatement = _joinStatement + " <span class='blue'> INNER JOIN </span> <br/> ";
                     _joinStatement = _joinStatement + "[" + tableTwo + "] <span class='blue'>AS</span> " + GetAliseName(tableTwo) + " <span class='blue'> ON </span> <br/>";
-                    _joinStatement = _joinStatement + "[" + tableAlise[j - 1].alise + "].[" + tableOneReference + "] = [" + GetAliseName(tableTwo) + "].[" + tableTwoReference + "]";
-
+                    _joinStatement = _joinStatement + "[" + tableAlise[j - 1].alise + "].[" + tableOneReference + "] = [" + GetAliseName(tableTwo) + "].[" + tableTwoReference + "]";                    
                 }
 
                 parentTable = tableTwo;

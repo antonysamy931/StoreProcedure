@@ -93,10 +93,14 @@
     <Content Include="Content\Images\bg-5-full.jpg" />
     <Content Include="Content\Images\bg-nature-full.jpg" />
     <Content Include="Content\Images\town.jpg" />
+    <Content Include="Content\jquery.scrollbar\jquery.scrollbar.css" />
     <Content Include="Content\jScrollPane\jquery.jscrollpane.css" />
     <Content Include="Content\liteAccordion\css\bg_noise.png" />
     <Content Include="Content\liteAccordion\css\bg_stitch.png" />
     <Content Include="Content\liteAccordion\css\liteaccordion.css" />
+    <Content Include="Content\nanoscroller.css" />
+    <Content Include="Content\slide-in-panel\reset.css" />
+    <Content Include="Content\slide-in-panel\style.css" />
     <Content Include="Content\spinkit.css" />
     <Content Include="Content\Style.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -873,6 +877,9 @@
     <Content Include="Scripts\i18n\angular-locale_zu.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\jquery.nanoscroller.min.js" />
+    <Content Include="Scripts\jquery.scrollbar\jquery.scrollbar.js" />
+    <Content Include="Scripts\jquery.scrollbar\jquery.scrollbar.min.js" />
     <Content Include="Scripts\jScrollPane\jquery.jscrollpane.js" />
     <Content Include="Scripts\jScrollPane\jquery.jscrollpane.min.js" />
     <Content Include="Scripts\jScrollPane\jquery.mousewheel.js" />
