@@ -14,22 +14,6 @@ D:\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storepr
 D:\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.csprojResolveAssemblyReference.cache
 D:\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.dll
 D:\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.pdb
-D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\Storeprocedure.Service.dll
-D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\Storeprocedure.Service.pdb
-D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\Newtonsoft.Json.dll
-D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Net.Http.Formatting.dll
-D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Web.Cors.dll
-D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Web.Http.Cors.dll
-D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Web.Http.dll
-D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Web.Http.WebHost.dll
-D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\Newtonsoft.Json.xml
-D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Net.Http.Formatting.xml
-D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Web.Http.xml
-D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Web.Http.Cors.xml
-D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Web.Http.WebHost.xml
-D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.csprojResolveAssemblyReference.cache
-D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.dll
-D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.pdb
 C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\bin\Storeprocedure.Service.dll
 C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\bin\Storeprocedure.Service.pdb
 C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\bin\Newtonsoft.Json.dll
@@ -46,3 +30,19 @@ C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\bin\Syste
 C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.csprojResolveAssemblyReference.cache
 C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.dll
 C:\Users\Lenovo\Documents\GitHub\StoreProcedure\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.pdb
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\Storeprocedure.Service.dll
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\Storeprocedure.Service.pdb
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\Newtonsoft.Json.dll
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Net.Http.Formatting.dll
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Web.Cors.dll
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Web.Http.Cors.dll
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Web.Http.dll
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Web.Http.WebHost.dll
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\Newtonsoft.Json.xml
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Net.Http.Formatting.xml
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Web.Http.xml
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Web.Http.Cors.xml
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\bin\System.Web.Http.WebHost.xml
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.csprojResolveAssemblyReference.cache
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.dll
+D:\antony\Visual Studio 2012 project -15 apr 2014 backup\Storeprocedure.Service\Storeprocedure.Service\obj\Debug\Storeprocedure.Service.pdb

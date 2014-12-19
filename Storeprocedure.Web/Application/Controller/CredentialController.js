@@ -1,4 +1,5 @@
-﻿/// <reference path="../Scripts/angular.min.js" />
+﻿/// <reference path="../../Scripts/select2.js" />
+/// <reference path="../Scripts/angular.min.js" />
 /// <reference path="../../Scripts/angular-local-storage.min.js" />
 /// <reference path="../App.js" />
 /// <reference path="../Service/DatabaseService.js" />
@@ -11,7 +12,7 @@ app.controller("CredentialController", ["$scope", "$location", "localStorageServ
 
     $scope.dataBase = [];
     $scope.loader = false;
-    $scope.ServerError = false;
+    $scope.ServerError = false;   
 
     $scope.GetDatabase = function () {
         $scope.loader = true;
