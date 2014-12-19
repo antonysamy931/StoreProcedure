@@ -4,6 +4,7 @@
 /// <reference path="../App.js" />
 "use strict";
 app.controller("HomeController", ["$scope", "$location", "DatabaseService", "SelectProcedure", function ($scope, $location, DatabaseService, SelectProcedure) {
+    $scope.preview = true;
     $scope.pro = {};
     $scope.dataBase = [];
     $scope.dataBase = DatabaseService.loadData();
@@ -74,7 +75,7 @@ app.controller("HomeController", ["$scope", "$location", "DatabaseService", "Sel
     $scope.pro.select.JoinTables.JoinModel = {};
 
     var PageLoad = function () {      
-        $('#yourdiv').liteAccordion({
+        $('#accor-container').liteAccordion({
             containerWidth: 900,
             containerHeight: 400,
             theme: 'dark',
@@ -553,9 +554,19 @@ app.controller("HomeController", ["$scope", "$location", "DatabaseService", "Sel
     $scope.CreateProcedure = function () {
         $scope.Result = SelectProcedure.CreateProcedure($scope.pro, $scope.dataBase);
         $('.cd-panel').addClass('is-visible');
+        $scope.preview = false;
     };
 
+    $scope.PanelClose = function () {
+        $('.cd-panel').removeClass('is-visible');
+        $scope.preview = true;
+    };
 
+    $scope.PreviewPro = function () {
+        $scope.Result = SelectProcedure.CreateProcedure($scope.pro, $scope.dataBase);
+        $('.cd-panel').addClass('is-visible');
+        $scope.preview = false;
+    };
 }]);
 
 /*
