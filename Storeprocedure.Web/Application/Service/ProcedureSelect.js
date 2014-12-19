@@ -62,20 +62,37 @@ app.factory('SelectProcedure', function () {
             if (select.length !== 0) {
                 var fields = pro.select.tableData[j].selectedColumns;
                 for (var i = 0; i < fields.length; i++) {
-                    if (i != fields.length - 1) {
-                        selectField = selectField + "[t" + Number(j + 1) + "]." + fields[i] + ",";
+                    if (i == 0 && selectField == '') {
+                        selectField = selectField + "&emsp;[t" + Number(j + 1) + "]." + fields[i] + ",<br/>";
+                    }
+                    else if (i != fields.length - 1) {
+                        selectField = selectField + "&emsp;[t" + Number(j + 1) + "]." + fields[i] + ",<br/>";
                     }
                     else {
-                        selectField = selectField + ",[t" + Number(j + 1) + "]." + fields[i];
+                        if (pro.select.tableData.length - 1 == j) {
+                            selectField = selectField + "&emsp;[t" + Number(j + 1) + "]." + fields[i];
+                        }
+                        else {
+                            selectField = selectField + "&emsp;[t" + Number(j + 1) + "]." + fields[i] + ",<br/>";
+                        }
                     }
                 }
             }
             else {
                 if (selectField == '') {
-                    selectField = selectField + "[t" + Number(j + 1) + "].*";
+                    if (pro.select.tableData.length - 1 == j) {
+                        selectField = selectField + "&emsp;[t" + Number(j + 1) + "].*";
+                    } else {
+                        selectField = selectField + "&emsp;[t" + Number(j + 1) + "].*,<br/>";
+                    }
                 }
                 else {
-                    selectField = selectField + ",[t" + Number(j + 1) + "].*";
+                    if (pro.select.tableData.length - 1 == j) {
+                        selectField = selectField + "&emsp;[t" + Number(j + 1) + "].*";
+                    } else {
+                        selectField = selectField + "&emsp;[t" + Number(j + 1) + "].*,<br/>";
+                    }
+                    //selectField = selectField + ",<br/>&emsp;[t" + Number(j + 1) + "].*";
                 }
             }
 
@@ -89,7 +106,7 @@ app.factory('SelectProcedure', function () {
             tableNames.push(pro.select.tableData[j].tableName);
         }
         var joinstatement = _join(pro, database);
-        return "<span class='blue'>SELECT</span> " + selectField + " <span class='blue'>FROM</span> <br/>" + joinstatement;
+        return "<span class='blue'>SELECT</span> <br/> " + selectField + " <br/><span class='blue'>FROM</span> <br/>" + joinstatement;
     };
 
     var _WhereStatement = function (pro) {
@@ -100,7 +117,7 @@ app.factory('SelectProcedure', function () {
             var value = _Operator(pro.select.conditions[i].optrValue).replace('{}', '@' + pro.select.conditions[i].fieldName);
             /*var condition = '[' + tableAlise[j].alise + '].[' + pro.select.conditions[i].fieldName + ']' + value;*/
             var condition = '[' + GetAliseName(pro.select.conditions[i].table) + '].[' + pro.select.conditions[i].fieldName + ']' + value;
-            if (where == '') {
+            if (i == 0) {
                 if (pro.select.conditions.length > 1) {
                     where = condition + _logicalOperator(pro.select.conditions[i].logicalOperator) + ' <br/> ';
                 }
@@ -108,8 +125,11 @@ app.factory('SelectProcedure', function () {
                     where = condition;
                 }
             }
-            else {
+            else if (i != pro.select.conditions.length - 1) {
                 where = where + condition + _logicalOperator(pro.select.conditions[i].logicalOperator) + ' <br/> ';
+            }
+            else {
+                where = where + condition + _logicalOperator(pro.select.conditions[i].logicalOperator);
             }
             /*}
         }*/
@@ -325,20 +345,24 @@ app.factory('SelectProcedure', function () {
                 }
 
                 if (_joinStatement == '') {
-                    _joinStatement = "[" + tableOne + "] <span class='blue'>AS</span> " + GetAliseName(tableOne) + " <span class='blue'> INNER JOIN </span>";
-                    _joinStatement = _joinStatement + "[" + tableTwo + "] <span class='blue'>AS</span> " + GetAliseName(tableTwo) + " <span class='blue'> ON </span>";
-                    _joinStatement = _joinStatement + "[" + GetAliseName(tableOne) + "].[" + tableOneReference + "] = [" + GetAliseName(tableTwo) + "].[" + tableTwoReference + "]";
+                    _joinStatement = "[" + tableOne + "] <span class='blue'>AS</span> " + GetAliseName(tableOne) + "<br/> <span class='blue'> INNER JOIN </span> <br/>";
+                    _joinStatement = _joinStatement + "[" + tableTwo + "] <span class='blue'>AS</span> " + GetAliseName(tableTwo) + "<span class='blue'> ON </span><br/>";
+                    _joinStatement = _joinStatement + "[" + GetAliseName(tableOne) + "].[" + tableOneReference + "] = [" + GetAliseName(tableTwo) + "].[" + tableTwoReference + "]<br/>";
                 }
                 else {
-                    _joinStatement = _joinStatement + " <span class='blue'> INNER JOIN </span> ";
-                    _joinStatement = _joinStatement + "[" + tableTwo + "] <span class='blue'>AS</span> " + GetAliseName(tableTwo) + " <span class='blue'> ON </span>";
+                    _joinStatement = _joinStatement + " <span class='blue'> INNER JOIN </span> <br/> ";
+                    _joinStatement = _joinStatement + "[" + tableTwo + "] <span class='blue'>AS</span> " + GetAliseName(tableTwo) + " <span class='blue'> ON </span> <br/>";
                     _joinStatement = _joinStatement + "[" + tableAlise[j - 1].alise + "].[" + tableOneReference + "] = [" + GetAliseName(tableTwo) + "].[" + tableTwoReference + "]";
+
                 }
 
                 parentTable = tableTwo;
                 i++;
                 j++;
             }
+        }
+        if (tableAlise.length == 1) {
+            _joinStatement = "[" + tableAlise[0].name + "] <span class='blue'>AS</span> " + GetAliseName(tableAlise[0].name);
         }
         return _joinStatement;
     };
