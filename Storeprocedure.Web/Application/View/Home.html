@@ -1,210 +1,304 @@
-﻿<form name="procedure" novalidate ng-submit="Create()">
-    <div class="block blue">
-        <div class="container">
-            <div class="row row-override">
-                <div class="span12">
-                    <div class="clear-form no-border">
+﻿<style>
+    .nano {
+        height: 390px;
+    }
 
-                        <div class="form-heading">
-                            <h3 class="header">Create Procedure</h3>
-                            <hr />
-                        </div>
-                        <div class="form-body">
-                            <span class="form-label">Enter procedure name </span>
-                            <input class="input-block-level" type="text" name="Name" ng-model="pro.Name" required />
-                            <span class="form-label">Type of procedure </span>
-                            <select ng-model="pro.Type" class="input-block-level">
-                                <option ng-selected="{{type.name == pro.Type}}" ng-repeat="type in types" value="{{type.name}}">{{type.name}}
-                                </option>
-                            </select>
-                            <hr />
+        .nano .nano-content {
+            padding: 10px;
+        }
+
+        .nano .nano-pane {
+            background: rgba(243,134,48,0.3);
+            display: block!important;
+        }
+
+        .nano .nano-slider {
+            background: rgba(243,134,48,0.8) !important;
+        }
+</style>
+<div class="preview" ng-click="PreviewPro()" ng-show="preview && procedure.$valid">
+   <a href="" alt="PREVIEW" title="PREVIEW"><i class="fa fa-caret-left"></i></a> 
+</div>
+<div class="container body-container common-background">
+    <div class="form-heading">
+        <h3 class="header">Create Procedure</h3>
+    </div>
+    <form name="procedure" novalidate ng-submit="Create()">
+        <div id="accor-container">
+            <ol>
+                <li>
+                    <h2><span>Procedure Name</span></h2>
+                    <div>
+                        <div class="accordion-container">
+                            <div class="form-group">
+                                <div class="col-sm-2"></div>
+                                <label class="control-label col-sm-4">Enter procedure name:</label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" type="text" name="Name" ng-model="pro.Name" required />
+                                </div>
+                                <div class="col-sm-2"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-2"></div>
+                                <label class="control-label col-sm-4">Type of procedure:</label>
+                                <div class="col-sm-4">
+                                    <select ng-model="pro.Type" class="form-control">
+                                        <option ng-selected="{{type.name == pro.Type}}" ng-repeat="type in types" value="{{type.name}}">{{type.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="container" ng-hide="procedure.$invalid">
-            <div class="row">
-                <div ng-if="pro.Type == 'Select'">
-                    <div class="col-sm-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <p class="panel-title">Select</p>
-                            </div>
-                            <div class="panel-body">
-                                <span ng-repeat="table in pro.select.tableData">
-                                    <div class="col-sm-12">
-                                        <div class="col-sm-4">
-                                            <div class="col-sm-3">
-                                                <label class="table-label">{{table.model}}</label>
-                                            </div>
-                                            <div class="col-sm-9">
-                                                <!--<select class="input-block-level" ng-model="pro.select.tableModel[pro.select.tableData[$index].model]" ng-change="tableChange(pro.select.tableModel[pro.select.tableData[$index].model],$index)">
-                                                <option ng-selected="{{pro.select.tableData[$index].tableName == tablename}}" ng-repeat="tablename in pro.select.tableData[$index].tableCollection" value="{{tablename}}">{{tablename}}</option>
-                                            </select>-->
-                                                <select class="input-block-level" ng-model="pro.select.tableModel[pro.select.tableData[$index].model]" ng-options="tablename for tablename in pro.select.tableData[$index].tableCollection" ng-change="tableChange(pro.select.tableModel[pro.select.tableData[$index].model],$index)">
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <span ng-if="pro.select.tableData[$index].tableColumns.length > 1">
-                                                <span class="checkboxOne" ng-repeat="column in pro.select.tableData[$index].tableColumns">
-                                                    <div class="col-sm-6">
-                                                        <input type="checkbox" ng-checked="column.Checked" ng-click="ColumnCheck(column, !column.Checked, column.Name, $parent.$index)" value="{{column.Name}}" />
-                                                        <label>
-                                                            <span></span>
-                                                            {{column.Name}}
-                                                        </label>
+                </li>
+                <li>
+                    <h2><span>Table</span></h2>
+                    <div>
+                        <div class="nano">
+                            <div class="nano-content">
+                                <div class="block blue">
+                                    <div ng-hide="procedure.$invalid">
+                                        <div class="row">
+                                            <div ng-if="pro.Type == 'Select'">
+                                                <div class="col-sm-12">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <p class="panel-title">Select</p>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <span ng-repeat="table in pro.select.tableData">
+                                                                <div class="col-sm-12">
+                                                                    <div class="col-sm-4">
+                                                                        <div class="col-sm-3">
+                                                                            <label class="table-label">{{table.model}}</label>
+                                                                        </div>
+                                                                        <div class="col-sm-9">
+                                                                            <select class="input-block-level" ng-model="pro.select.tableModel[pro.select.tableData[$index].model]" ng-options="tablename for tablename in pro.select.tableData[$index].tableCollection" ng-change="tableChange(pro.select.tableModel[pro.select.tableData[$index].model],$index)">
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <span ng-if="pro.select.tableData[$index].tableColumns.length > 1">
+                                                                            <span class="checkboxOne" ng-repeat="column in pro.select.tableData[$index].tableColumns">
+                                                                                <div class="col-sm-6">
+                                                                                    <input type="checkbox" ng-checked="column.Checked" ng-click="ColumnCheck(column, !column.Checked, column.Name, $parent.$index)" value="{{column.Name}}" />
+                                                                                    <label class="check-label">
+                                                                                        <span></span>
+                                                                                        {{column.Name}}
+                                                                                    </label>
+                                                                                </div>
+
+                                                                            </span>
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="col-sm-1">
+                                                                        <a href="" ng-if="$index!=0" class="btn btn-default" ng-click="RemoveTable($index)">Remove</a>
+                                                                    </div>
+                                                                    <div class="col-sm-1">
+                                                                        <a ng-if="pro.select.tableData.length == $index+1 && pro.select.tableData[$index].relationTables.length > 0" class="btn btn-default" href="" ng-click="AddSelectTable($index)">Add</a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-12">
+                                                                    <hr />
+                                                                </div>
+                                                            </span>
+
+                                                        </div>
                                                     </div>
-
-                                                </span>
-                                                <!-- <span ng-repeat="column in pro.select.tableData[$index].tableColumns">
-                                                <input type="checkbox" checklist-model="pro.select.tableData[$index].selectedColumns" checklist-value="column" ng-click="ColumnCheck(column,$parent.$index,this)" />{{column}} 
-                                            </span>-->
-                                            </span>
-                                        </div>
-                                        <div class="col-sm-1">
-                                            <a href="" ng-if="$index!=0" class="btn btn-default" ng-click="RemoveTable($index)">Remove</a>
-                                        </div>
-                                        <div class="col-sm-1">
-                                            <a ng-if="pro.select.tableData.length == $index+1 && pro.select.tableData[$index].relationTables.length > 0" class="btn btn-default" href="" ng-click="AddSelectTable($index)">Add</a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-12">
-                                        <hr />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <h2><span>Condition</span></h2>
+                    <div>
+                        <div class="nano">
+                            <div class="nano-content">
+                                <div ng-hide="procedure.$invalid">
+                                    <div class="row">
+                                        <div ng-if="pro.Type == 'Select'">
+                                            <div class="col-sm-12">
+                                                <input type="checkbox" ng-model="pro.select.condition" ng-click="ConditionCheck(!pro.select.condition)" />
+                                                <label><span></span>Condition(Optional)</label>
+                                            </div>
+                                            <div class="col-sm-12" ng-show="pro.select.condition">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <p class="panel-title">Conditions</p>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <table class="table table-responsive borderless">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td width="20%">Table</td>
+                                                                    <td width="20%">Field</td>
+                                                                    <td width="20%">Condition</td>
+                                                                    <td width="20%">Operator</td>
+                                                                    <td width="20%">Action</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <table class="table table-responsive borderless">
+                                                            <tbody>
+                                                                <tr ng-repeat="conditiontbl in pro.select.conditions">
+                                                                    <td width="20%">
+                                                                        <select class="input-block-level" ng-model="pro.select.conditions.tableModel[pro.select.conditions[$index].model]" ng-options="table for table in pro.select.conditions[$index].tables" ng-change="conditionstableChange(pro.select.conditions.tableModel[pro.select.conditions[$index].model],$index)">
+                                                                            <option value="">--Select--</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td width="20%">
+                                                                        <select class="input-block-level" ng-model="pro.select.conditions.fieldModel[pro.select.conditions[$index].model]" ng-options="column.Name as column.Name for column in pro.select.conditions[$index].field" ng-change="conditionsfieldChange(pro.select.conditions.fieldModel[pro.select.conditions[$index].model],$index)">
+                                                                            <option value="">--Select--</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td width="20%">
+                                                                        <select class="input-block-level" ng-model="pro.select.conditions.operatorModel[pro.select.conditions[$index].model]" ng-options="operator.name as operator.name for operator in pro.select.conditions[$index].optr" ng-change="conditionsoperatorChange(pro.select.conditions.operatorModel[pro.select.conditions[$index].model],$index)">
+                                                                            <option value="">--Select--</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td width="20%">
+                                                                        <select class="input-block-level" ng-model="pro.select.conditions.logicalModel[pro.select.conditions[$index].model]" ng-options="logic for logic in logical" ng-change="conditionslogicalChange(pro.select.conditions.logicalModel[pro.select.conditions[$index].model],$index)">
+                                                                            <option value="">--Select--</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td width="20%">
+                                                                        <a href="" ng-click="RemoveCondition($index)" class="btn btn-default">Remove</a>
+                                                                        <a href="" ng-if="pro.select.conditions.length==$index+1 && pro.select.conditions[$index].Validate==true" class="btn btn-default" ng-click="AddCondition($index)">Add</a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>                                            
+                                        </div>
                                     </div>
-                                </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <h2><span>Relation</span></h2>
+                    <div>
+                        <div class="nano">
+                            <div class="nano-content">
+                                <div ng-hide="procedure.$invalid">
+                                    <div class="row">
+                                        <div ng-if="pro.Type == 'Select'">
+                                            <div class="col-sm-6" ng-if="pro.select.tableData.length>1">
+                                                <input type="checkbox" ng-model="pro.select.join" ng-click="JoinCheck(!pro.select.join)" />
+                                                <label><span></span>Joins(Optional - Default Inner join)</label>
+                                            </div>
+                                            <div class="col-sm-12" ng-show="pro.select.join">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <p class="panel-title">Joins</p>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <table class="table table-responsive borderless">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td width="25%">Left Table</td>
+                                                                    <td width="25%">Join</td>
+                                                                    <td width="25%">Right Table</td>
+                                                                    <td width="25%">Action</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <table class="table table-responsive borderless">
+                                                            <tbody>
+                                                                <tr ng-repeat="joinTable in pro.select.JoinTables">
+                                                                    <td width="25%">
+                                                                        <select class="input-block-level" ng-model="pro.select.JoinTables.tableOneModel[pro.select.JoinTables[$index].model]" ng-options="table for table in pro.select.JoinTables[$index].tableOne" ng-change="jointableoneChange(pro.select.JoinTables.tableOneModel[pro.select.JoinTables[$index].model],$index)">
+                                                                            <option value="">--Select--</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td width="25%">
+                                                                        <select class="input-block-level" ng-model="pro.select.JoinTables.JoinModel[pro.select.JoinTables[$index].model]" ng-options="join for join in pro.select.JoinTables[$index].joinTypes" ng-change="joinoperatorChange(pro.select.JoinTables.JoinModel[pro.select.JoinTables[$index].model],$index)">
+                                                                            <option value="">--Select--</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td width="25%">
+                                                                        <select class="input-block-level" ng-model="pro.select.JoinTables.tableTwoModel[pro.select.JoinTables[$index].model]" ng-options="table for table in pro.select.JoinTables[$index].tableTwo" ng-change="jointabletwoChange(pro.select.JoinTables.tableTwoModel[pro.select.JoinTables[$index].model],$index)">
+                                                                            <option value="">--Select--</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td width="25%">
+                                                                        <a href="" ng-click="RemoveJoin($index)" class="btn btn-default">Remove</a>
+                                                                        <a href="" ng-if="pro.select.JoinTables.length==$index+1 && pro.select.JoinTables[$index].validate==true" class="btn btn-default" ng-click="AddJoins($index)">Add</a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <h2><span>Result</span></h2>
+                    <div>
+                        <div ng-hide="procedure.$invalid">
+                            <div class="row">
+                                <div class="span12">
+                                    <div class="clear-form no-border">
+                                        <div class="form-footer">
+                                            <input class="btn btn-large btn-green btn-block" ng-disabled="procedure.$invalid" type="submit" value="CREATE" ng-click="CreateProcedure()" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ol>
+            <noscript>
+                <p>Please enable JavaScript to get the full experience.</p>
+            </noscript>
+        </div>
+    </form>
 
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="col-sm-6">
-                            <input type="checkbox" ng-model="pro.select.condition" ng-click="ConditionCheck(!pro.select.condition)" />
-                            <label><span></span>Condition(Optional)</label>
-                        </div>
-                        <div class="col-sm-6" ng-if="pro.select.tableData.length>1">
-                            <input type="checkbox" ng-model="pro.select.join" ng-click="JoinCheck(!pro.select.join)" />
-                            <label><span></span>Joins(Optional - Default Inner join)</label>
-                        </div>
-                    </div>
-                    <div class="col-sm-12" ng-show="pro.select.condition">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <p class="panel-title">Conditions</p>
-                            </div>
-                            <div class="panel-body">
-                                <table class="table table-responsive borderless">
-                                    <tbody>
-                                        <tr>
-                                            <td width="20%">Table</td>
-                                            <td width="20%">Field</td>
-                                            <td width="20%">Condition</td>
-                                            <td width="20%">Operator</td>
-                                            <td width="20%">Action</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table class="table table-responsive borderless">
-                                    <tbody>
-                                        <tr ng-repeat="conditiontbl in pro.select.conditions">
-                                            <td width="20%">
-                                                <select class="input-block-level" ng-model="pro.select.conditions.tableModel[pro.select.conditions[$index].model]" ng-options="table for table in pro.select.conditions[$index].tables" ng-change="conditionstableChange(pro.select.conditions.tableModel[pro.select.conditions[$index].model],$index)">
-                                                    <option value="">--Select--</option>
-                                                </select>
-                                            </td>
-                                            <td width="20%">
-                                                <select class="input-block-level" ng-model="pro.select.conditions.fieldModel[pro.select.conditions[$index].model]" ng-options="column.Name as column.Name for column in pro.select.conditions[$index].field" ng-change="conditionsfieldChange(pro.select.conditions.fieldModel[pro.select.conditions[$index].model],$index)">
-                                                    <option value="">--Select--</option>
-                                                </select>
-                                            </td>
-                                            <td width="20%">
-                                                <select class="input-block-level" ng-model="pro.select.conditions.operatorModel[pro.select.conditions[$index].model]" ng-options="operator.name as operator.name for operator in pro.select.conditions[$index].optr" ng-change="conditionsoperatorChange(pro.select.conditions.operatorModel[pro.select.conditions[$index].model],$index)">
-                                                    <option value="">--Select--</option>
-                                                </select>
-                                            </td>
-                                            <td width="20%">
-                                                <select class="input-block-level" ng-model="pro.select.conditions.logicalModel[pro.select.conditions[$index].model]" ng-options="logic for logic in logical" ng-change="conditionslogicalChange(pro.select.conditions.logicalModel[pro.select.conditions[$index].model],$index)">
-                                                    <option value="">--Select--</option>
-                                                </select>
-                                            </td>
-                                            <td width="20%">
-                                                <a href="" ng-click="RemoveCondition($index)" class="btn btn-default">Remove</a>
-                                                <a href="" ng-if="pro.select.conditions.length==$index+1 && pro.select.conditions[$index].Validate==true" class="btn btn-default" ng-click="AddCondition($index)">Add</a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12" ng-show="pro.select.join">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <p class="panel-title">Joins</p>
-                            </div>
-                            <div class="panel-body">
-                                <table class="table table-responsive borderless">
-                                    <tbody>
-                                        <tr>
-                                            <td width="25%">Left Table</td>
-                                            <td width="25%">Join</td>
-                                            <td width="25%">Right Table</td>                                            
-                                            <td width="25%">Action</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table class="table table-responsive borderless">
-                                    <tbody>
-                                        <tr ng-repeat="joinTable in pro.select.JoinTables">
-                                            <td width="25%">
-                                                <select class="input-block-level" ng-model="pro.select.JoinTables.tableOneModel[pro.select.JoinTables[$index].model]" ng-options="table for table in pro.select.JoinTables[$index].tableOne" ng-change="jointableoneChange(pro.select.JoinTables.tableOneModel[pro.select.JoinTables[$index].model],$index)">
-                                                    <option value="">--Select--</option>
-                                                </select>
-                                            </td>
-                                            <td width="25%">
-                                                <select class="input-block-level" ng-model="pro.select.JoinTables.JoinModel[pro.select.JoinTables[$index].model]" ng-options="join for join in pro.select.JoinTables[$index].joinTypes" ng-change="joinoperatorChange(pro.select.JoinTables.JoinModel[pro.select.JoinTables[$index].model],$index)">
-                                                    <option value="">--Select--</option>
-                                                </select>
-                                            </td>
-                                            <td width="25%">
-                                                <select class="input-block-level" ng-model="pro.select.JoinTables.tableTwoModel[pro.select.JoinTables[$index].model]" ng-options="table for table in pro.select.JoinTables[$index].tableTwo" ng-change="jointabletwoChange(pro.select.JoinTables.tableTwoModel[pro.select.JoinTables[$index].model],$index)">
-                                                    <option value="">--Select--</option>
-                                                </select>
-                                            </td>                                            
-                                            <td width="25%">
-                                                <a href="" ng-click="RemoveJoin($index)" class="btn btn-default">Remove</a>
-                                                <a href="" ng-if="pro.select.JoinTables.length==$index+1 && pro.select.JoinTables[$index].validate==true" class="btn btn-default" ng-click="AddJoins($index)">Add</a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12" ng-if="pro.Type == 'Insert'">
-                        <p>Insert</p>
-                    </div>
-                    <div class="col-sm-12" ng-if="pro.Type == 'Update'">
-                        <p>Update</p>
-                    </div>
-                    <div class="col-sm-12" ng-if="pro.Type == 'Delete'">
-                        <p>Delete</p>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="span12">
-                        <div class="clear-form no-border">
-                            <div class="form-footer">
-                                <input class="btn btn-large btn-green btn-block" ng-disabled="procedure.$invalid" type="submit" value="CREATE" ng-click="CreateProcedure()" />
-                            </div>
-                        </div>
-                    </div>
+</div>
+<!--<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <pre>{{pro.select.tableData|json}}</pre>
+        </div>
+        <div class="col-sm-6">
+            <pre>{{pro.select.conditions|json}}</pre>
+            <pre>{{pro.select.JoinTables|json}}</pre>
+        </div>
+    </div>
+</div>-->
+
+
+<div class="cd-panel from-right">
+    <header class="cd-panel-header">
+        <h1>Title Goes Here</h1>
+        <a href="" class="cd-panel-close" ng-click="PanelClose()">Close</a>
+    </header>
+
+    <div class="cd-panel-container">
+        <div class="cd-panel-content">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div ng-bind-html="Result"></div>
                 </div>
             </div>
         </div>
+<<<<<<< HEAD
 </form>
 <div class="row">
     <div class="col-sm-6">
@@ -218,6 +312,11 @@
 <div class="row">
     <div class="col-sm-12">
         <div ng-bind-html="Result"></div>
+=======
+        <!-- cd-panel-content -->
+>>>>>>> b03458655e7bbd1d8d455c31ef0917c269d395b1
     </div>
+    <!-- cd-panel-container -->
 </div>
+<!-- cd-panel -->
 

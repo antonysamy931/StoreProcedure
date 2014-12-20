@@ -1,8 +1,10 @@
 ﻿/// <reference path="../Scripts/angular.min.js" />
 /// <reference path="../../Scripts/jquery-1.9.1.min.js" />
+/// <reference path="../../Scripts/jScrollPane/jquery.jscrollpane.min.js" />
 /// <reference path="../App.js" />
 "use strict";
 app.controller("HomeController", ["$scope", "$location", "DatabaseService", "SelectProcedure", function ($scope, $location, DatabaseService, SelectProcedure) {
+    $scope.preview = true;
     $scope.pro = {};
     $scope.dataBase = [];
     $scope.dataBase = DatabaseService.loadData();
@@ -72,16 +74,18 @@ app.controller("HomeController", ["$scope", "$location", "DatabaseService", "Sel
     $scope.pro.select.JoinTables.tableTwoModel = {};
     $scope.pro.select.JoinTables.JoinModel = {};
 
-    $scope.Trigger = function () {
-        alert('trigger');
-    };
-
-    $scope.$watch(function ($scope) {
-        return $scope;
-    },
-    function (oldValue, newValue) {
-        console.log(newValue);
-    });
+    var PageLoad = function () {      
+        $('#accor-container').liteAccordion({
+            containerWidth: 900,
+            containerHeight: 400,
+            theme: 'dark',
+            rounded: true,
+            enumerateSlides: true,
+            firstSlide: 1,
+            linkable: true
+        });
+        $(".nano").nanoScroller();
+    };    
 
     var removeDuplicatesInPlace = function (arr) {
         var i, j, cur, found;
@@ -131,6 +135,8 @@ app.controller("HomeController", ["$scope", "$location", "DatabaseService", "Sel
         });
         return filter
     };
+
+    PageLoad();
 
     $scope.tableChange = function (TableName, index) {
         var removeItem = $scope.pro.select.tableData.length - (index + 1)
@@ -545,8 +551,21 @@ app.controller("HomeController", ["$scope", "$location", "DatabaseService", "Sel
         $scope.pro.select.JoinTables.push({ model: joinModel, tableOne: filterTable, tableTwo: [], tableOneSelect: '', tableTwoSelect: '', joinTypes: [], join: '', validate: false });
     };
 
-    $scope.CreateProcedure = function () {        
+    $scope.CreateProcedure = function () {
         $scope.Result = SelectProcedure.CreateProcedure($scope.pro, $scope.dataBase);
+        $('.cd-panel').addClass('is-visible');
+        $scope.preview = false;
+    };
+
+    $scope.PanelClose = function () {
+        $('.cd-panel').removeClass('is-visible');
+        $scope.preview = true;
+    };
+
+    $scope.PreviewPro = function () {
+        $scope.Result = SelectProcedure.CreateProcedure($scope.pro, $scope.dataBase);
+        $('.cd-panel').addClass('is-visible');
+        $scope.preview = false;
     };
 }]);
 

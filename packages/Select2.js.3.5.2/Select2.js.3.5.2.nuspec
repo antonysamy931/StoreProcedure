@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Select2.js</id>
+    <version>3.5.2</version>
+    <authors>Igor Vaynberg (Packaged by Jeremy Howard and Stefan Plattner)</authors>
+    <owners>Igor Vaynberg (Packaged by Jeremy Howard and Stefan Plattner)</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>http://ivaynberg.github.com/select2/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A jQuery based replacement for select boxes. It supports searching, remote data sets, and infinite scrolling of results.</description>
+    <releaseNotes>Changelog from 3.5.2
+
+#2776 Replaced nonexistent locale "no" with "nb" (Norwegian Bokmål).
+#2769 Automatically scrolls down to multi-value select2 in Chrome
+#2726 Fixes results count in accessible text
+#2720 Fixing IE8 and IE9 issues
+#2615 Syntax error with IE embedded as ActiveX in fat client
+#2588 Redirect the focus of original input to Select2
+#2412 Multiple empty spans with select2-hidden-accessible appended to body
+#2364 Stopped refresh to top when `closeOnSelect: false`</releaseNotes>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="jQuery" version="1.7" />
+    </dependencies>
+  </metadata>
+</package>

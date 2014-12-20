@@ -35,8 +35,12 @@ namespace Storeprocedure.Service.Controllers
                     _database.ConnectionString = checkConnection;
                     databaseRepository = new DatabaseRepository(checkConnection, _database);
                     databaseRepository.GetDatabase();
+                    return Ok(_database);
                 }
-                return Ok(_database);
+                else
+                {
+                    return BadRequest(checkConnection);
+                }
             }
             return BadRequest();
         }
